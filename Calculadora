@@ -1,0 +1,55 @@
+import urllib
+import xml.etree.ElementTree as etree
+
+a='560'
+b='315'
+c='0'
+d='100'
+centrado= "text-align:center;"
+r='blue'
+play= "https://embed.spotify.com/?uri=spotify%3Auser%3A1296525192%3Aplaylist%3A1LvlXFgP0Dq0GrrgX1ujky"
+bo="true"
+
+e = '       Tutoriales de Derivacion e Integracion'
+p1="https://www.youtube.com/embed/videoseries?list=PL09728DE14405D426"
+p2="https://www.youtube.com/embed/videoseries?list=PL3DEE7CD207260F7C"
+
+print("Diego Cardenas, Frank Guerra, Misael Velasco y Mauricio Castro presentan:")
+print("Calculadora y Multibuscador")
+
+archivo = open("proyecto.html", "w")
+Ecuacion = raw_input("Por favor, ingrese la funcion que desea:  ")
+
+API=urllib.urlopen("http://api.wolframalpha.com/v2/query?input="+Ecuacion+"&appid=6H6Q4L-V8X7L2Q2Y2").read()
+atributos = etree.fromstring(API)
+
+mensaje3 = "<h1 style="+centrado+">Diego Cardenas, Frank Guerra, Misael Velasco y Mauricio Castro presentan:</h1>"
+mensaje3 = mensaje3 + "<h1 style="+centrado+">Resultado</h1>"
+mensaje3= mensaje3+"<BODY BGCOLOR="+r+">"+"<iframe src="+play+" width="+a+" height="+b+" frameborder="+c+" allowtransparency="+bo+"></iframe>"
+archivo.write(mensaje3)
+
+for i in atributos.findall('.//pod'):
+    print(i.attrib['title'])
+    for j in i.findall('.//plaintext'):
+        if j.text:
+
+            mensaje =""
+            mensaje = "<tr>" + mensaje + "<h4>" + j.text + "</h4><br></tr>"
+
+            archivo.write(mensaje)
+
+mensaje2 ="<h1 style='text-align:center;'>" + e + "</h1>"
+mensaje2 = mensaje2+"</table>"
+mensaje2 = mensaje2+"	<td><iframe width="+a+" height="+b+" src="+p1+" frameborder="+c+" allowfullscreen></iframe> </td> "
+mensaje2 = mensaje2+" <td><iframe width="+a+" height="+b+" src="+p2+" frameborder="+c+" allowfullscreen></iframe></td>"
+
+
+
+
+
+
+
+
+
+archivo.write(mensaje2)
+archivo.close()
